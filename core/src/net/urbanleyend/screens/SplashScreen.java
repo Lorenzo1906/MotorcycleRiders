@@ -4,15 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import net.urbanleyend.helpers.AssetLoader;
@@ -20,9 +17,9 @@ import net.urbanleyend.motorcycleriders.MotorcycleRiders;
 
 public class SplashScreen implements Screen {
 
-    private SpriteBatch batcher;
     private Sprite sprite;
     private Stage stage;
+    private Image splashImage;
     private MotorcycleRiders game;
 
     public SplashScreen(MotorcycleRiders game) {
@@ -35,27 +32,26 @@ public class SplashScreen implements Screen {
         sprite = new Sprite(AssetLoader.logo);
         sprite.setColor(1, 1, 1, 0);
 
+        splashImage = new Image(sprite);
+
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
         float desiredWidth = width * .7f;
         float scale = desiredWidth / sprite.getWidth();
+        float newWidth = sprite.getWidth() * scale;
+        float newHeight = sprite.getHeight() * scale;
+        float newX = (width / 2) - (newWidth / 2);
+        float newY = (height / 2) - (newHeight / 2);
 
-        sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
-        sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2) - (sprite.getHeight() / 2));
+        splashImage.setWidth(newWidth);
+        splashImage.setHeight(newHeight);
+        splashImage.setPosition(newX, newY);
+
         setupActions();
-        batcher = new SpriteBatch();
     }
 
     private void setupActions() {
-        TextureRegion splashRegion = new TextureRegion(sprite);
-        Image splashImage = new Image(splashRegion);
         splashImage.getColor().a = 0f;
-
-        splashImage.setWidth(.5f * Gdx.graphics.getWidth());
-        splashImage.setScaling(Scaling.fillX);
-
-        splashImage.setWidth(.5f * Gdx.graphics.getHeight());
-        splashImage.setScaling(Scaling.fillY);
 
         AfterAction loadNextScreen = new AfterAction();
         loadNextScreen.setAction(new Action() {
