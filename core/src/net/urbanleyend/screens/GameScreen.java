@@ -2,9 +2,29 @@ package net.urbanleyend.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
+
+import net.urbanleyend.gameworld.GameRenderer;
+import net.urbanleyend.gameworld.GameWorld;
+import net.urbanleyend.helpers.InputHandler;
 
 public class GameScreen implements Screen {
+
+    private GameWorld world;
+    private GameRenderer renderer;
+    private float runTime;
+
+    public GameScreen() {
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+        float gameWidth = 136;
+        float gameHeight = screenHeight / (screenWidth / gameWidth);
+        int midPointY = (int) (gameHeight / 2);
+
+        world = new GameWorld(midPointY);
+        Gdx.input.setInputProcessor(new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight));
+        renderer = new GameRenderer(world, (int) gameHeight, midPointY);
+        world.setRenderer(renderer);
+    }
 
     @Override
     public void show() {
@@ -13,8 +33,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        runTime += delta;
+        world.update(delta);
+        renderer.render(delta, runTime);
     }
 
     @Override
