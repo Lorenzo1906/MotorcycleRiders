@@ -74,7 +74,6 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
-        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 
@@ -96,7 +95,6 @@ project(":core") {
         compile "com.kotcrab.vis:vis-runtime:0.2.1"
         compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.1"
         compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.1"
-        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 

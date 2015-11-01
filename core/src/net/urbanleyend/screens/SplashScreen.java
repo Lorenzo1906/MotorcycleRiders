@@ -5,26 +5,29 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import net.urbanleyend.TweenAccessors.SpriteAccessor;
 import net.urbanleyend.helpers.AssetLoader;
 import net.urbanleyend.motorcycleriders.MotorcycleRiders;
 
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
-
 public class SplashScreen implements Screen {
 
-    private TweenManager manager;
     private SpriteBatch batcher;
     private Sprite sprite;
+    private Stage stage;
     private MotorcycleRiders game;
 
     public SplashScreen(MotorcycleRiders game) {
         this.game = game;
+        this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
     @Override
@@ -38,37 +41,49 @@ public class SplashScreen implements Screen {
         float scale = desiredWidth / sprite.getWidth();
 
         sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
-        sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2)
-                - (sprite.getHeight() / 2));
-        setupTween();
+        sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2) - (sprite.getHeight() / 2));
+        setupActions();
         batcher = new SpriteBatch();
     }
 
-    private void setupTween() {
-        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
-        manager = new TweenManager();
+    private void setupActions() {
+        TextureRegion splashRegion = new TextureRegion(sprite);
+        Image splashImage = new Image(splashRegion);
+        splashImage.getColor().a = 0f;
 
-        TweenCallback cb = new TweenCallback() {
-            @Override
-            public void onEvent(int type, BaseTween<?> source) {
-                game.setScreen(new GameScreen());
-            }
-        };
+        splashImage.setWidth(.5f * Gdx.graphics.getWidth());
+        splashImage.setScaling(Scaling.fillX);
 
-        Tween.to(sprite, SpriteAccessor.ALPHA, .8f).target(1)
-                .ease(TweenEquations.easeInOutQuad).repeatYoyo(1, .4f)
-                .setCallback(cb).setCallbackTriggers(TweenCallback.COMPLETE)
-                .start(manager);
+        splashImage.setWidth(.5f * Gdx.graphics.getHeight());
+        splashImage.setScaling(Scaling.fillY);
+
+        AfterAction loadNextScreen = new AfterAction();
+        loadNextScreen.setAction(new Action() {
+                                     @Override
+                                     public boolean act(float delta) {
+                                         game.setScreen( new GameScreen() );
+                                         return true;
+                                     }
+                                 }
+        );
+
+        SequenceAction actions = new SequenceAction();
+        actions.addAction(Actions.fadeIn(0.75f));
+        actions.addAction(Actions.delay(1.75f));
+        actions.addAction(Actions.fadeOut(0.75f));
+        actions.addAction(loadNextScreen);
+
+        splashImage.addAction(actions);
+
+        stage.addActor(splashImage);
     }
 
     @Override
     public void render(float delta) {
-        manager.update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batcher.begin();
-        sprite.draw(batcher);
-        batcher.end();
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
