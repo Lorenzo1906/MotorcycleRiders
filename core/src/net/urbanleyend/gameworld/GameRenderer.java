@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import net.urbanleyend.gameobjects.Building;
 import net.urbanleyend.gameobjects.ScrollHandler;
+import net.urbanleyend.gameobjects.Street;
 import net.urbanleyend.helpers.AssetLoader;
 
 public class GameRenderer {
@@ -23,9 +24,10 @@ public class GameRenderer {
     // Game Objects
     private ScrollHandler scroller;
     private Building rightBuildingA, rightBuildingB, rightBuildingC, leftBuildingA, leftBuildingB, leftBuildingC;
+    private Street streetA, streetB;
 
     // Game Assets
-    private TextureRegion buildingA, buildingB, buildingC;
+    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB;
 
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
         this.world = world;
@@ -53,12 +55,17 @@ public class GameRenderer {
         leftBuildingA = scroller.getLeftBuildingA();
         leftBuildingB = scroller.getLeftBuildingB();
         leftBuildingC = scroller.getLeftBuildingC();
+
+        streetA = scroller.getStreetA();
+        streetB = scroller.getStreetB();
     }
 
     private void initAssets() {
         buildingA = AssetLoader.buildingA;
         buildingB = AssetLoader.buildingB;
         buildingC = AssetLoader.buildingC;
+        streetTextureA = AssetLoader.streetA;
+        streetTextureB = AssetLoader.streetB;
     }
 
     public void render(float delta, float runTime) {
@@ -75,6 +82,8 @@ public class GameRenderer {
         batcher.begin();
 
         drawBuildings();
+        drawStreet();
+
         batcher.end();
     }
 
@@ -86,5 +95,10 @@ public class GameRenderer {
         batcher.draw(buildingA, leftBuildingA.getX(), leftBuildingA.getY(), leftBuildingA.getWidth(), leftBuildingA.getHeight());
         batcher.draw(buildingB, leftBuildingB.getX(), leftBuildingB.getY(), leftBuildingB.getWidth(), leftBuildingB.getHeight());
         batcher.draw(buildingC, leftBuildingC.getX(), leftBuildingC.getY(), leftBuildingC.getWidth(), leftBuildingC.getHeight());
+    }
+
+    private void drawStreet() {
+        batcher.draw(streetTextureA, streetA.getX(), streetA.getY(), streetA.getWidth(), streetA.getHeight());
+        batcher.draw(streetTextureB, streetB.getX(), streetB.getY(), streetB.getWidth(), streetB.getHeight());
     }
 }

@@ -1,19 +1,15 @@
 package net.urbanleyend.gameobjects;
 
-import com.badlogic.gdx.Gdx;
-
 import net.urbanleyend.gameworld.GameWorld;
 
 public class ScrollHandler {
 
     private Building rightBuildingA, rightBuildingB, rightBuildingC, leftBuildingA, leftBuildingB, leftBuildingC;
+    private Street streetA;
+    private Street streetB;
     public static final int SCROLL_SPEED = -59;
-    public static final int PIPE_GAP = 49;
-
-    private GameWorld gameWorld;
 
     public ScrollHandler(GameWorld gameWorld, float xPos){
-        this.gameWorld = gameWorld;
 
         rightBuildingA = new Building(0, 0, 34, 150, SCROLL_SPEED);
         rightBuildingB = new Building(0, rightBuildingA.getTailY(), 34, 150, SCROLL_SPEED);
@@ -21,21 +17,35 @@ public class ScrollHandler {
 
         float leftX = xPos * 2;
 
-        Gdx.app.log(this.getClass().getName(), leftX + "");
-
         leftBuildingA = new Building(leftX - 34, 0, 34, 150, SCROLL_SPEED);
         leftBuildingB = new Building(leftX - 34, leftBuildingA.getTailY(), 34, 150, SCROLL_SPEED);
         leftBuildingC = new Building(leftX - 34, leftBuildingB.getTailY(), 34, 150, SCROLL_SPEED);
+
+        streetA = new Street(34, 0, 68, 204, SCROLL_SPEED);
+        streetB = new Street(34, getStreetA().getTailY(), 68, 204, SCROLL_SPEED);
     }
 
     public void updateReady(float delta) {
         updateLeftBuildings(delta);
         updateRightBuildings(delta);
+        updateStreet(delta);
     }
 
     public void update(float delta) {
         updateLeftBuildings(delta);
         updateRightBuildings(delta);
+        updateStreet(delta);
+    }
+
+    private void updateStreet(float delta) {
+        getStreetA().update(delta);
+        streetB.update(delta);
+
+        if (getStreetA().isScrolledDown()) {
+            getStreetA().reset(streetB.getTailY());
+        } else if (streetB.isScrolledDown()) {
+            streetB.reset(getStreetA().getTailY());
+        }
     }
 
     private void updateLeftBuildings(float delta){
@@ -112,5 +122,13 @@ public class ScrollHandler {
 
     public Building getLeftBuildingC() {
         return leftBuildingC;
+    }
+
+    public Street getStreetA() {
+        return streetA;
+    }
+
+    public Street getStreetB() {
+        return streetB;
     }
 }
