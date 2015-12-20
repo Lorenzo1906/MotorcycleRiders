@@ -1,10 +1,12 @@
 package net.urbanleyend.gameworld;
 
+import net.urbanleyend.gameobjects.Bike;
 import net.urbanleyend.gameobjects.GameState;
 import net.urbanleyend.gameobjects.ScrollHandler;
 
 public class GameWorld {
 
+    private Bike bike;
     private ScrollHandler scroller;
     private GameRenderer renderer;
     private GameState currentState;
@@ -17,7 +19,9 @@ public class GameWorld {
         currentState = GameState.MENU;
         this.midPointX = midPointX;
 
-        scroller = new ScrollHandler(this, midPointX);
+        bike = new Bike(midPointX - 6, 22, 12, 36);
+
+        scroller = new ScrollHandler(this, getMidPointX());
     }
 
     public void update(float delta) {
@@ -34,11 +38,16 @@ public class GameWorld {
     }
 
     private void updateReady(float delta) {
+        bike.updateReady(delta);
         scroller.updateReady(delta);
     }
 
     public void setRenderer(GameRenderer renderer) {
         this.renderer = renderer;
+    }
+
+    public Bike getBike(){
+        return bike;
     }
 
     public int getMidPointX() {

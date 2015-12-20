@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import net.urbanleyend.gameobjects.Bike;
 import net.urbanleyend.gameobjects.Building;
 import net.urbanleyend.gameobjects.ScrollHandler;
 import net.urbanleyend.gameobjects.Street;
@@ -22,12 +23,13 @@ public class GameRenderer {
     private int midPointY;
 
     // Game Objects
+    private Bike bike;
     private ScrollHandler scroller;
     private Building rightBuildingA, rightBuildingB, rightBuildingC, leftBuildingA, leftBuildingB, leftBuildingC;
     private Street streetA, streetB;
 
     // Game Assets
-    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB;
+    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB, bikeTexture;
 
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
         this.world = world;
@@ -47,6 +49,7 @@ public class GameRenderer {
 
     private void initGameObjects() {
         scroller = world.getScroller();
+        bike = world.getBike();
 
         rightBuildingA = scroller.getRightBuildingA();
         rightBuildingB = scroller.getRightBuildingB();
@@ -66,6 +69,7 @@ public class GameRenderer {
         buildingC = AssetLoader.buildingC;
         streetTextureA = AssetLoader.streetA;
         streetTextureB = AssetLoader.streetB;
+        bikeTexture = AssetLoader.bike;
     }
 
     public void render(float delta, float runTime) {
@@ -84,6 +88,18 @@ public class GameRenderer {
         drawBuildings();
         drawStreet();
 
+        if (world.isRunning()) {
+
+        } else if (world.isReady()) {
+
+        } else if (world.isMenu()) {
+            drawBikeCentered(delta);
+        } else if (world.isGameOver()) {
+
+        } else if (world.isHighScore()) {
+
+        }
+
         batcher.end();
     }
 
@@ -100,5 +116,9 @@ public class GameRenderer {
     private void drawStreet() {
         batcher.draw(streetTextureA, streetA.getX(), streetA.getY(), streetA.getWidth(), streetA.getHeight());
         batcher.draw(streetTextureB, streetB.getX(), streetB.getY(), streetB.getWidth(), streetB.getHeight());
+    }
+
+    private void drawBikeCentered(float runTime) {
+        batcher.draw(bikeTexture, bike.getX(), bike.getY(), bike.getWidth(), bike.getHeight());
     }
 }
