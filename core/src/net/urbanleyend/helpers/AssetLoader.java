@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static Texture logoTexture, buildingTextureA, buildingTextureB, buildingTextureC, streetTextureA, streetTextureB, bikeTexture;
-    public static TextureRegion logo, buildingA, buildingB, buildingC, streetA, streetB, bike;
+    public static Texture logoTexture, buildingTextureA, buildingTextureB, buildingTextureC, streetTextureA, streetTextureB, bikeTexture, readyTexture;
+    public static TextureRegion logo, buildingA, buildingB, buildingC, streetA, streetB, bike, ready;
 
     public static void load() {
         logoTexture = new Texture(Gdx.files.internal("data/logo.png"));
@@ -31,6 +31,9 @@ public class AssetLoader {
         bikeTexture = new Texture(Gdx.files.internal("data/bike.png"));
         bikeTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
+        readyTexture = new Texture(Gdx.files.internal("data/ready.png"));
+        readyTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         logo = new TextureRegion(logoTexture, 0, 0, 512, 114);
         buildingA = new TextureRegion(buildingTextureA, 0, 0, 34, 150);
         buildingB = new TextureRegion(buildingTextureB, 0, 0, 34, 150);
@@ -38,6 +41,7 @@ public class AssetLoader {
         streetA = new TextureRegion(streetTextureA, 0, 0, 68, 204);
         streetB = new TextureRegion(streetTextureB, 0, 0, 68, 204);
         bike = new TextureRegion(bikeTexture, 0, 0, 12, 36);
+        ready = new TextureRegion(readyTexture, 0, 0, 36, 12);
     }
 
     public static void dispose() {
@@ -48,5 +52,6 @@ public class AssetLoader {
         streetTextureA.dispose();
         streetTextureB.dispose();
         bikeTexture.dispose();
+        readyTexture.dispose();
     }
 }

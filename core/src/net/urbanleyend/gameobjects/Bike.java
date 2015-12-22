@@ -5,6 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Bike {
 
+    private static final int LEFT_LINE = 40;
+    private static final int RIGHT_LINE = 84;
+    private static final int DISTANCE = 22;
+
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration;
@@ -40,6 +44,28 @@ public class Bike {
 
     public void updateReady(float runTime) {
 
+    }
+
+    public void changeToNextLeftLine() {
+
+        if (position.x == LEFT_LINE) {
+            System.out.println("Let's suppose that it play a sound");
+            //TODO: Play a fucking sound
+            return;
+        }
+
+        position.x = position.x - DISTANCE;
+    }
+
+    public void changeToNextLeftRight() {
+
+        if (position.x == RIGHT_LINE) {
+            System.out.println("Let's suppose that it play a sound");
+            //TODO: Play a fucking sound
+            return;
+        }
+
+        position.x = position.x + DISTANCE;
     }
 
     public float getX() {

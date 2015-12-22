@@ -20,7 +20,7 @@ public class GameRenderer {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batcher;
 
-    private int midPointY;
+    private int midPointX;
 
     // Game Objects
     private Bike bike;
@@ -29,11 +29,11 @@ public class GameRenderer {
     private Street streetA, streetB;
 
     // Game Assets
-    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB, bikeTexture;
+    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB, bikeTexture, ready;
 
-    public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
+    public GameRenderer(GameWorld world, int gameHeight, int midPointX) {
         this.world = world;
-        this.midPointY = midPointY;
+        this.midPointX = midPointX;
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, 136, gameHeight);
@@ -70,6 +70,7 @@ public class GameRenderer {
         streetTextureA = AssetLoader.streetA;
         streetTextureB = AssetLoader.streetB;
         bikeTexture = AssetLoader.bike;
+        ready = AssetLoader.ready;
     }
 
     public void render(float delta, float runTime) {
@@ -89,9 +90,10 @@ public class GameRenderer {
         drawStreet();
 
         if (world.isRunning()) {
-
+            drawBike(delta);
         } else if (world.isReady()) {
-
+            drawBike(delta);
+            drawReady();
         } else if (world.isMenu()) {
             drawBikeCentered(delta);
         } else if (world.isGameOver()) {
@@ -118,7 +120,15 @@ public class GameRenderer {
         batcher.draw(streetTextureB, streetB.getX(), streetB.getY(), streetB.getWidth(), streetB.getHeight());
     }
 
+    private void drawBike(float runTime) {
+        batcher.draw(bikeTexture, bike.getX(), bike.getY(), bike.getWidth(), bike.getHeight());
+    }
+
     private void drawBikeCentered(float runTime) {
         batcher.draw(bikeTexture, bike.getX(), bike.getY(), bike.getWidth(), bike.getHeight());
+    }
+
+    private void drawReady() {
+        batcher.draw(ready, midPointX - 18, 156, 36, 12);
     }
 }

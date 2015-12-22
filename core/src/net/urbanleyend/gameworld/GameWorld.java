@@ -16,7 +16,8 @@ public class GameWorld {
     private float runTime = 0;
 
     public GameWorld(int midPointX) {
-        currentState = GameState.MENU;
+        //currentState = GameState.MENU;
+        currentState = GameState.READY;
         this.midPointX = midPointX;
 
         bike = new Bike(midPointX - 6, 22, 12, 36);
@@ -32,6 +33,9 @@ public class GameWorld {
             case MENU:
                 updateReady(delta);
                 break;
+            case RUNNING:
+                updateRunning(delta);
+                break;
             default:
                 break;
         }
@@ -39,6 +43,11 @@ public class GameWorld {
 
     private void updateReady(float delta) {
         bike.updateReady(delta);
+        scroller.updateReady(delta);
+    }
+
+    public void updateRunning(float delta) {
+        bike.updateReady(runTime);
         scroller.updateReady(delta);
     }
 
