@@ -16,6 +16,8 @@ public class InputHandler implements InputProcessor {
     private float scaleFactorX;
     private float scaleFactorY;
 
+    private float originalPositionX;
+
     public InputHandler(GameWorld world, float scaleFactorX, float scaleFactorY) {
         this.world = world;
         bike = world.getBike();
@@ -29,12 +31,22 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
 
-        if (keycode == Input.Keys.LEFT) {
-            bike.changeToNextLeftLine();
+        if (world.isMenu()) {
+
+        } else if (world.isReady()) {
+            world.start();
+        } else if (world.isRunning()) {
+            if (keycode == Input.Keys.LEFT) {
+                bike.changeToNextLeftLine();
+            }
+
+            if (keycode == Input.Keys.RIGHT) {
+                bike.changeToNextLeftRight();
+            }
         }
 
-        if (keycode == Input.Keys.RIGHT) {
-            bike.changeToNextLeftRight();
+        if (world.isGameOver() || world.isHighScore()) {
+
         }
 
         return false;
@@ -60,7 +72,7 @@ public class InputHandler implements InputProcessor {
         } else if (world.isReady()) {
             world.start();
         } else if (world.isRunning()) {
-            //myBird.onClick();
+            originalPositionX = screenX;
         }
 
         if (world.isGameOver() || world.isHighScore()) {
@@ -72,7 +84,29 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
+
+        if (world.isMenu()) {
+            //playButton.isTouchDown(screenX, screenY);
+        } else if (world.isReady()) {
+            world.start();
+        } else if (world.isRunning()) {
+            float diff = screenX - originalPositionX;
+
+            if (diff > 0) {
+                bike.changeToNextLeftRight();
+            }
+            if (diff < 0) {
+                bike.changeToNextLeftLine();
+            }
+        }
+
+        if (world.isGameOver() || world.isHighScore()) {
+            //myWorld.restart();
+        }
+
+        return true;
     }
 
     @Override
