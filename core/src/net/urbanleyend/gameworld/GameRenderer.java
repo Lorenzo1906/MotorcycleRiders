@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import net.urbanleyend.gameobjects.Bike;
 import net.urbanleyend.gameobjects.Building;
+import net.urbanleyend.gameobjects.Car;
 import net.urbanleyend.gameobjects.ScrollHandler;
 import net.urbanleyend.gameobjects.Street;
 import net.urbanleyend.helpers.AssetLoader;
@@ -27,9 +28,10 @@ public class GameRenderer {
     private ScrollHandler scroller;
     private Building rightBuildingA, rightBuildingB, rightBuildingC, leftBuildingA, leftBuildingB, leftBuildingC;
     private Street streetA, streetB;
+    private Car carA, carB, carC, carD;
 
     // Game Assets
-    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB, bikeTexture, ready;
+    private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB, bikeTexture, ready, carATexture, carBTexture;
 
     public GameRenderer(GameWorld world, int gameHeight, int midPointX) {
         this.world = world;
@@ -61,6 +63,11 @@ public class GameRenderer {
 
         streetA = scroller.getStreetA();
         streetB = scroller.getStreetB();
+
+        carA = scroller.getCarA();
+        carB = scroller.getCarB();
+        carC = scroller.getCarC();
+        carD = scroller.getCarD();
     }
 
     private void initAssets() {
@@ -71,6 +78,8 @@ public class GameRenderer {
         streetTextureB = AssetLoader.streetB;
         bikeTexture = AssetLoader.bike;
         ready = AssetLoader.ready;
+        carATexture = AssetLoader.carA;
+        carBTexture = AssetLoader.carB;
     }
 
     public void render(float delta, float runTime) {
@@ -91,6 +100,7 @@ public class GameRenderer {
 
         if (world.isRunning()) {
             drawBike(delta);
+            drawCars(delta);
         } else if (world.isReady()) {
             drawBike(delta);
             drawReady();
@@ -122,6 +132,13 @@ public class GameRenderer {
 
     private void drawBike(float runTime) {
         batcher.draw(bikeTexture, bike.getX(), bike.getY(), bike.getWidth(), bike.getHeight());
+    }
+
+    private void drawCars(float runTime) {
+        batcher.draw(carATexture, carA.getX(), carA.getY(), carA.getWidth(), carA.getHeight());
+        batcher.draw(carBTexture, carB.getX(), carB.getY(), carB.getWidth(), carB.getHeight());
+        batcher.draw(carATexture, carC.getX(), carC.getY(), carC.getWidth(), carC.getHeight());
+        batcher.draw(carBTexture, carD.getX(), carD.getY(), carD.getWidth(), carD.getHeight());
     }
 
     private void drawBikeCentered(float runTime) {

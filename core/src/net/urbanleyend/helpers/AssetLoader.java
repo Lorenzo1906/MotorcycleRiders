@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static Texture logoTexture, buildingTextureA, buildingTextureB, buildingTextureC, streetTextureA, streetTextureB, bikeTexture, readyTexture;
-    public static TextureRegion logo, buildingA, buildingB, buildingC, streetA, streetB, bike, ready;
+    private static Texture logoTexture, buildingTextureA, buildingTextureB, buildingTextureC, streetTextureA, streetTextureB, bikeTexture, readyTexture, carATexture, carBTexture;
+    public static TextureRegion logo, buildingA, buildingB, buildingC, streetA, streetB, bike, ready, carA, carB;
 
     public static void load() {
         logoTexture = new Texture(Gdx.files.internal("data/logo.png"));
@@ -34,6 +34,12 @@ public class AssetLoader {
         readyTexture = new Texture(Gdx.files.internal("data/ready.png"));
         readyTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
+        carATexture = new Texture(Gdx.files.internal("data/carA.png"));
+        carATexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        carBTexture = new Texture(Gdx.files.internal("data/carB.png"));
+        carBTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         logo = new TextureRegion(logoTexture, 0, 0, 512, 114);
         buildingA = new TextureRegion(buildingTextureA, 0, 0, 34, 150);
         buildingB = new TextureRegion(buildingTextureB, 0, 0, 34, 150);
@@ -42,6 +48,8 @@ public class AssetLoader {
         streetB = new TextureRegion(streetTextureB, 0, 0, 68, 204);
         bike = new TextureRegion(bikeTexture, 0, 0, 12, 36);
         ready = new TextureRegion(readyTexture, 0, 0, 36, 12);
+        carA = new TextureRegion(carATexture, 0, 0, 24, 72);
+        carB = new TextureRegion(carBTexture, 0, 0, 24, 72);
     }
 
     public static void dispose() {
@@ -53,5 +61,7 @@ public class AssetLoader {
         streetTextureB.dispose();
         bikeTexture.dispose();
         readyTexture.dispose();
+        carATexture.dispose();
+        carBTexture.dispose();
     }
 }

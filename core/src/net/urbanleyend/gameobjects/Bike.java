@@ -3,11 +3,9 @@ package net.urbanleyend.gameobjects;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Bike {
+import net.urbanleyend.helpers.Constants;
 
-    private static final int LEFT_LINE = 40;
-    private static final int RIGHT_LINE = 84;
-    private static final int DISTANCE = 22;
+public class Bike {
 
     private Vector2 position;
     private Vector2 velocity;
@@ -16,6 +14,7 @@ public class Bike {
     private float rotation;
     private int width;
     private float height;
+    private float centerX;
 
     private float originalX;
 
@@ -36,6 +35,8 @@ public class Bike {
         body = new Rectangle();
         backTire = new Rectangle();
         isAlive = true;
+
+        centerX = width / 2;
     }
 
     public void update(float delta) {
@@ -48,24 +49,24 @@ public class Bike {
 
     public void changeToNextLeftLine() {
 
-        if (position.x == LEFT_LINE) {
+        if ( (position.x + centerX) == Constants.LEFT_LINE) {
             System.out.println("Let's suppose that it play a sound");
             //TODO: Play a fucking sound
             return;
         }
 
-        position.x = position.x - DISTANCE;
+        position.x = position.x - Constants.DISTANCE;
     }
 
     public void changeToNextLeftRight() {
 
-        if (position.x == RIGHT_LINE) {
+        if ( (position.x + centerX) == Constants.RIGHT_LINE) {
             System.out.println("Let's suppose that it play a sound");
             //TODO: Play a fucking sound
             return;
         }
 
-        position.x = position.x + DISTANCE;
+        position.x = position.x + Constants.DISTANCE;
     }
 
     public float getX() {
