@@ -9,7 +9,7 @@ public class ScrollHandler {
 
     private Building rightBuildingA, rightBuildingB, rightBuildingC, leftBuildingA, leftBuildingB, leftBuildingC;
     private Street streetA, streetB;
-    private Car carA, carB, carC, carD;
+    private Car carA, carB, carC, carD, carE, carF;
     public static final int SCROLL_SPEED = -59;
 
     public ScrollHandler(GameWorld gameWorld, float xPos){
@@ -31,13 +31,14 @@ public class ScrollHandler {
         carB = new Car(Constants.RIGHT_LINE - 12, 300, 24, 72, SCROLL_SPEED);
         carC = new Car(Constants.CENTER_LINE - 12, carA.getTailY() + Constants.SPACE_CAR, 24, 72, SCROLL_SPEED);
         carD = new Car(Constants.RIGHT_LINE - 12, carB.getTailY() + Constants.SPACE_CAR, 24, 72, SCROLL_SPEED);
+        carE = new Car(Constants.CENTER_LINE - 12, carC.getTailY() + Constants.SPACE_CAR, 24, 72, SCROLL_SPEED);
+        carF = new Car(Constants.CENTER_LINE - 12, carD.getTailY() + Constants.SPACE_CAR, 24, 72, SCROLL_SPEED);
     }
 
     public void updateReady(float delta) {
         updateLeftBuildings(delta);
         updateRightBuildings(delta);
         updateStreet(delta);
-        updateCars(delta);
     }
 
     public void update(float delta) {
@@ -52,13 +53,15 @@ public class ScrollHandler {
         carB.update(delta);
         carC.update(delta);
         carD.update(delta);
+        carE.update(delta);
+        carF.update(delta);
 
         if (carA.isScrolledDown()) {
-            carA.reset(carC.getTailY() + Constants.SPACE_CAR, getRandomLane() - carA.getCenterX());
+            carA.reset(carE.getTailY() + Constants.SPACE_CAR, getRandomLane() - carA.getCenterX());
         }
 
         if (carB.isScrolledDown()) {
-            carB.reset(carD.getTailY() + Constants.SPACE_CAR, getRandomLane() - carB.getCenterX());
+            carB.reset(carF.getTailY() + Constants.SPACE_CAR, getRandomLane() - carB.getCenterX());
         }
 
         if (carC.isScrolledDown()) {
@@ -67,6 +70,14 @@ public class ScrollHandler {
 
         if (carD.isScrolledDown()) {
             carD.reset(carB.getTailY() + Constants.SPACE_CAR, getRandomLane() - carD.getCenterX());
+        }
+
+        if (carE.isScrolledDown()) {
+            carE.reset(carC.getTailY() + Constants.SPACE_CAR, getRandomLane() - carE.getCenterX());
+        }
+
+        if (carF.isScrolledDown()) {
+            carF.reset(carD.getTailY() + Constants.SPACE_CAR, getRandomLane() - carF.getCenterX());
         }
     }
 
@@ -130,6 +141,10 @@ public class ScrollHandler {
         return result;
     }
 
+    public boolean collides(Bike bike) {
+        return (carA.collides(bike) || carB.collides(bike) || carC.collides(bike) || carD.collides(bike) || carE.collides(bike) || carF.collides(bike));
+    }
+
     public void stop() {
         rightBuildingA.stop();
         rightBuildingB.stop();
@@ -146,11 +161,9 @@ public class ScrollHandler {
         carB.stop();
         carC.stop();
         carD.stop();
+        carE.stop();
+        carF.stop();
     }
-
-    //public boolean collides(Bird bird) {
-
-    //}
 
     public void onRestart() {
         rightBuildingA.onRestart(0, SCROLL_SPEED);
@@ -168,6 +181,8 @@ public class ScrollHandler {
         carB.onRestart(200, getRandomLane() - carB.getCenterX(), SCROLL_SPEED);
         carC.onRestart(carA.getTailY(), getRandomLane() - carC.getCenterX(), SCROLL_SPEED);
         carD.onRestart(carB.getTailY(), getRandomLane() - carD.getCenterX(), SCROLL_SPEED);
+        carE.onRestart(carC.getTailY(), getRandomLane() - carE.getCenterX(), SCROLL_SPEED);
+        carF.onRestart(carD.getTailY(), getRandomLane() - carF.getCenterX(), SCROLL_SPEED);
     }
 
     public Building getRightBuildingA() {
@@ -216,5 +231,13 @@ public class ScrollHandler {
 
     public Car getCarD() {
         return carD;
+    }
+
+    public Car getCarE() {
+        return carE;
+    }
+
+    public Car getCarF() {
+        return carF;
     }
 }

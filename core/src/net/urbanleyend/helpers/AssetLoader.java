@@ -8,6 +8,7 @@ public class AssetLoader {
 
     private static Texture logoTexture, buildingTextureA, buildingTextureB, buildingTextureC, streetTextureA, streetTextureB, bikeTexture, readyTexture, carATexture, carBTexture;
     public static TextureRegion logo, buildingA, buildingB, buildingC, streetA, streetB, bike, ready, carA, carB;
+    public static boolean debug = true;
 
     public static void load() {
         logoTexture = new Texture(Gdx.files.internal("data/logo.png"));

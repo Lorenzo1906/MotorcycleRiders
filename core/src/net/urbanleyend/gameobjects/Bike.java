@@ -40,7 +40,7 @@ public class Bike {
     }
 
     public void update(float delta) {
-
+        body.set(position.x, position.y, width, height);
     }
 
     public void updateReady(float runTime) {
@@ -48,6 +48,9 @@ public class Bike {
     }
 
     public void changeToNextLeftLine() {
+        if (!isAlive) {
+            return;
+        }
 
         if ( (position.x + centerX) == Constants.LEFT_LINE) {
             System.out.println("Let's suppose that it play a sound");
@@ -59,6 +62,9 @@ public class Bike {
     }
 
     public void changeToNextLeftRight() {
+        if (!isAlive) {
+            return;
+        }
 
         if ( (position.x + centerX) == Constants.RIGHT_LINE) {
             System.out.println("Let's suppose that it play a sound");
@@ -67,6 +73,11 @@ public class Bike {
         }
 
         position.x = position.x + Constants.DISTANCE;
+    }
+
+    public void die() {
+        isAlive = false;
+        velocity.y = 0;
     }
 
     public float getX() {

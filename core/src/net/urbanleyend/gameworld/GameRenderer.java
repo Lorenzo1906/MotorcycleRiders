@@ -1,6 +1,7 @@
 package net.urbanleyend.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +29,7 @@ public class GameRenderer {
     private ScrollHandler scroller;
     private Building rightBuildingA, rightBuildingB, rightBuildingC, leftBuildingA, leftBuildingB, leftBuildingC;
     private Street streetA, streetB;
-    private Car carA, carB, carC, carD;
+    private Car carA, carB, carC, carD, carE, carF;
 
     // Game Assets
     private TextureRegion buildingA, buildingB, buildingC, streetTextureA, streetTextureB, bikeTexture, ready, carATexture, carBTexture;
@@ -68,6 +69,8 @@ public class GameRenderer {
         carB = scroller.getCarB();
         carC = scroller.getCarC();
         carD = scroller.getCarD();
+        carE = scroller.getCarE();
+        carF = scroller.getCarF();
     }
 
     private void initAssets() {
@@ -113,6 +116,31 @@ public class GameRenderer {
         }
 
         batcher.end();
+
+
+        //Debug code
+        if(AssetLoader.debug){
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+            shapeRenderer.setColor(new Color(255, 0, 0, 0.5f));
+            shapeRenderer.rect(bike.getBody().x, bike.getBody().y, bike.getBody().width, bike.getBody().height);
+
+            shapeRenderer.setColor(new Color(0, 61, 245, 0.5f));
+            shapeRenderer.rect(carA.getBody().x, carA.getBody().y, carA.getBody().width, carA.getBody().height);
+            shapeRenderer.rect(carB.getBody().x, carB.getBody().y, carB.getBody().width, carB.getBody().height);
+            shapeRenderer.rect(carC.getBody().x, carC.getBody().y, carC.getBody().width, carC.getBody().height);
+            shapeRenderer.rect(carD.getBody().x, carD.getBody().y, carD.getBody().width, carD.getBody().height);
+            shapeRenderer.rect(carE.getBody().x, carE.getBody().y, carE.getBody().width, carE.getBody().height);
+            shapeRenderer.rect(carF.getBody().x, carF.getBody().y, carF.getBody().width, carF.getBody().height);
+
+            shapeRenderer.end();
+        }
+        //End debug code
+
+
     }
 
     private void drawBuildings() {
@@ -139,6 +167,8 @@ public class GameRenderer {
         batcher.draw(carBTexture, carB.getX(), carB.getY(), carB.getWidth(), carB.getHeight());
         batcher.draw(carATexture, carC.getX(), carC.getY(), carC.getWidth(), carC.getHeight());
         batcher.draw(carBTexture, carD.getX(), carD.getY(), carD.getWidth(), carD.getHeight());
+        batcher.draw(carATexture, carE.getX(), carE.getY(), carE.getWidth(), carE.getHeight());
+        batcher.draw(carBTexture, carF.getX(), carF.getY(), carF.getWidth(), carF.getHeight());
     }
 
     private void drawBikeCentered(float runTime) {

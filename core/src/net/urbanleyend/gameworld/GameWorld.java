@@ -10,6 +10,7 @@ public class GameWorld {
     private ScrollHandler scroller;
     private GameRenderer renderer;
     private GameState currentState;
+    private boolean isAlive = true;
 
     private int midPointX;
     private int score = 0;
@@ -47,8 +48,14 @@ public class GameWorld {
     }
 
     public void updateRunning(float delta) {
-        bike.updateReady(runTime);
-        scroller.updateReady(delta);
+        bike.update(delta);
+        scroller.update(delta);
+
+        if (scroller.collides(bike)) {
+            scroller.stop();
+            bike.die();
+            isAlive = false;
+        }
     }
 
     public void setRenderer(GameRenderer renderer) {
@@ -80,13 +87,11 @@ public class GameWorld {
     }
 
     public void ready() {
-        //currentState = GameState.READY;
-        //renderer.prepareTransition(0, 0, 0, 1f);
+
     }
 
     public void restart() {
         score = 0;
-       // bird.onRestart(midPointY - 5);
         scroller.onRestart();
         ready();
     }
